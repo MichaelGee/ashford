@@ -19,6 +19,7 @@ export default defineConfig({
       '@context': './src/context',
       '@layouts': './src/layouts',
       '@pages': './src/pages',
+      '@types': './src/types',
     },
   },
 });
