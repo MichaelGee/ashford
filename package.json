@@ -24,7 +24,8 @@
     "react-query": "^3.39.3",
     "react-router-dom": "^6.22.3",
     "tailwind-merge": "^2.2.1",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "ui-box": "^5.4.1"
   },
   "devDependencies": {
     "@types/node": "^20.11.26",
