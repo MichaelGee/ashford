@@ -1,6 +1,6 @@
-import CreateAccount from '@/pages/createAccount';
-import Login from '@/pages/login';
-import LoginAsGuest from '@/pages/loginAsGuest';
+import CreateAccount from '@/pages/createAccount/createAccount';
+import Login from '@/pages/login/login';
+import LoginAsGuest from '@/pages/loginAsGuest/loginAsGuest';
 
 const authRoutes = [
   {path: '/login', element: <Login />},
