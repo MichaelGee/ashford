@@ -1,12 +1,8 @@
-import axios, {
-  AxiosResponse,
-  RawAxiosRequestHeaders,
-  AxiosInstance,
-} from 'axios';
+import axios, {RawAxiosRequestHeaders, AxiosInstance} from 'axios';
 
 // create an axios instance
 export const api: AxiosInstance = axios.create({
-  baseURL: '',
+  baseURL: 'https://example.com/v1/',
   headers: {} as RawAxiosRequestHeaders,
 });
 

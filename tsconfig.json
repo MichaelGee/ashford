@@ -9,7 +9,7 @@
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
-    "isolatedModules": true,
+    "isolatedModules": false,
     "noEmit": true,
     "jsx": "react-jsx",
     /* Linting */
@@ -17,15 +17,21 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "baseUrl": "./src"
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["src/*"],
+      "@/utils/*": ["./src/utils/*"],
+      "@/assets/*": ["./src/assets/*"],
+      "@/components/*": ["./src/components/*"],
+      "@/config/*": ["./src/config/*"],
+      "@/context/*": ["./src/context/*"],
+      "@/layouts/*": ["./src/layouts/*"],
+      "@/pages/*": ["./src/pages/*"],
+      "@/types/*": ["./src/types/*"]
+    }
   },
   "include": ["src"],
-  "paths": {
-    "@/*": ["./src/*"],
-    "@/utils/*": ["./src/utils/*"],
-    "@/assets/*": ["./src/assets/*"],
-    "@/components/*": ["./src/components/*"]
-  },
+
   "references": [
     {
       "path": "./tsconfig.node.json"
