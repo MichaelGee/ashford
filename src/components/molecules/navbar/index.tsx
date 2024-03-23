@@ -1,4 +1,5 @@
 import logo from '@/assets/images/logo.svg';
+import {Bell, MenuIcon} from 'lucide-react';
 
 const Navbar = () => {
   return (
@@ -8,4 +9,13 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+const InAppNavBar = () => {
+  return (
+    <div className="fixed top-0 left-0 w-full flex justify-between items-center p-[1rem] bg-white">
+      <MenuIcon />
+      <Bell />
+    </div>
+  );
+};
+
+export {Navbar, InAppNavBar};

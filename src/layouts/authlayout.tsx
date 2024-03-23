@@ -1,4 +1,4 @@
-import Navbar from '@/components/molecules/navbar';
+import {Navbar} from '@/components/molecules/navbar';
 import PageWrapper from '@/components/molecules/pagewrapper';
 import {Outlet} from 'react-router-dom';
 import Box from 'ui-box';
