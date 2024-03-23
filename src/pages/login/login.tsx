@@ -23,7 +23,7 @@ const Login = () => {
             Continue as Guest
           </Button>
           <span className="text-[0.8rem]">
-            New user? <a>Sign up</a>
+            New user? <a href="/auth/create-account">Sign up</a>
           </span>
         </div>
       </form>
