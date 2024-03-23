@@ -1,3 +1,4 @@
+import {Navigate} from 'react-router-dom';
 import CreateAccount from '@/pages/createAccount/createAccount';
 import Login from '@/pages/login/login';
 import LoginAsGuest from '@/pages/loginAsGuest/loginAsGuest';
@@ -10,6 +11,6 @@ const authRoutes = [
   {path: '/verify-account', element: <VerifyAccount />},
 ];
 
-const inAppRoutes = [];
+const inAppRoutes = [{path: '/', element: <Navigate to="/auth/login" />}];
 
 export {authRoutes, inAppRoutes};
