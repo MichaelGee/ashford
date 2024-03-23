@@ -55,6 +55,8 @@ module.exports = {
         gray002: 'hsla(202, 13%, 56%, 1)',
         blue001: 'hsla(196, 89%, 39%, 1)',
         blue002: 'hsla(216, 62%, 14%, 1)',
+        blue003: 'hsla(217, 61%, 30%, 1)',
+        blue004: 'hsla(217, 61%, 30%, 0.6)',
       },
       borderRadius: {
         lg: 'var(--radius)',
