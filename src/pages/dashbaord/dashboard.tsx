@@ -28,7 +28,7 @@ const Dashboard = () => {
       {/* Products */}
       <div className="mt-space400">
         <h1 className="text-primary font-bold mb-space200">Our Products</h1>
-        <div className="flex flex-wrap gap-4">
+        <div className="flex flex-wrap gap-4 justify-between">
           {products.map(product => (
             <ProductCard key={product.id} tag={product.tag} />
           ))}
