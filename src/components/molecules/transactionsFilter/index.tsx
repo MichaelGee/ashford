@@ -47,12 +47,12 @@ const TransactionsFilter = () => {
       <DrawerContent>
         <DrawerHeader>
           <DrawerTitle>
-            <h1 className="text-start text-primary font-bold">
+            <h1 className="text-start text-primary font-bold mb-5">
               Filter Transactions
             </h1>
           </DrawerTitle>
           <DrawerDescription>
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between mb-5">
               <p className="text-[0.75rem] text-primary">Date</p>
               <DateRange date={dateRange} setDate={handleDateChange} />
             </div>
