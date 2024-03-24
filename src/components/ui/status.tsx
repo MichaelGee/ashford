@@ -2,7 +2,7 @@ import {cva} from 'class-variance-authority';
 import {cn} from '@/lib/utils';
 
 interface StatusProps {
-  variant: 'requested' | 'pending' | 'success';
+  variant: 'requested' | 'pending' | 'success' | 'rejected';
   className?: string;
 }
 
@@ -14,6 +14,7 @@ const statusVariants = cva(
         requested: 'bg-[#1E427D1A] text-[#1E427D]',
         pending: 'bg-[#FFA5001A] text-[#FFA500]',
         success: 'bg-[#10B9811A] text-[#10B981]',
+        rejected: 'bg-[#E74C3C1A] text-[#E74C3C]',
       },
     },
   }
