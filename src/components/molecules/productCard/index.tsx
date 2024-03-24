@@ -2,8 +2,10 @@ import {Button} from '@/components/ui/button';
 import {ellipsize} from '@/lib/utils';
 import {ArrowRight} from 'lucide-react';
 import Box from 'ui-box';
+import {useNavigate} from 'react-router-dom';
 
 const ProductCard = ({tag}) => {
+  const navigate = useNavigate();
   return (
     <div className="bg-white shadow-md rounded-[8px] max-w-[10rem] min-h-[9.8rem] relative">
       <div className="relative">
@@ -22,8 +24,6 @@ const ProductCard = ({tag}) => {
         </p>
       </div>
 
-      {/* <p></p> */}
-
       <div className="p-[0.5rem]">
         <p className="text-[0.6rem] mb-2 text-primary">
           {ellipsize(
@@ -31,7 +31,12 @@ const ProductCard = ({tag}) => {
             65
           )}
         </p>
-        <Button variant="outline" size="sm" className="w-full">
+        <Button
+          variant="outline"
+          size="sm"
+          className="w-full"
+          onClick={() => navigate('/quote')}
+        >
           Get quote{' '}
           <div className="ml-1">
             <ArrowRight width={15} />

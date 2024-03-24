@@ -3,7 +3,7 @@ import Status from '@/components/ui/status';
 import {ChevronRight} from 'lucide-react';
 import React from 'react';
 
-const Home = () => {
+const Dashboard = () => {
   const products = [
     {id: 1, tag: 'AIR FREIGHT'},
     {id: 2, tag: 'SEA FREIGHT'},
@@ -44,7 +44,7 @@ const Home = () => {
           <p className="text-[0.6rem] text-blue003">View all</p>
         </div>
 
-        <div className="flex justify-between items-center py-[1rem] border-b-[#00000033]">
+        <div className="flex justify-between items-center py-[1rem] border-b-[0.7px] border-[#00000033]">
           <div className="flex">
             <img
               src="https://rb.gy/8ywh5w"
@@ -60,7 +60,7 @@ const Home = () => {
             <ChevronRight />
           </div>
         </div>
-        <div className="flex justify-between items-center py-[1rem] border-b-[#00000033]">
+        <div className="flex justify-between items-center py-[1rem] border-b-[0.7px] border-[#00000033]">
           <div className="flex">
             <img
               src="https://rb.gy/8ywh5w"
@@ -76,7 +76,7 @@ const Home = () => {
             <ChevronRight />
           </div>
         </div>
-        <div className="flex justify-between items-center py-[1rem] border-b-[#00000033]">
+        <div className="flex justify-between items-center py-[1rem] border-b-[0.7px] border-[#00000033]">
           <div className="flex">
             <img
               src="https://rb.gy/8ywh5w"
@@ -92,7 +92,7 @@ const Home = () => {
             <ChevronRight />
           </div>
         </div>
-        <div className="flex justify-between items-center py-[1rem] border-b-[#00000033]">
+        <div className="flex justify-between items-center py-[1rem] border-b-[0.7px] border-[#00000033]">
           <div className="flex">
             <img
               src="https://rb.gy/8ywh5w"
@@ -113,4 +113,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Dashboard;

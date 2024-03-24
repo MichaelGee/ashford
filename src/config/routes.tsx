@@ -3,7 +3,8 @@ import CreateAccount from '@/pages/createAccount/createAccount';
 import Login from '@/pages/login/login';
 import LoginAsGuest from '@/pages/loginAsGuest/loginAsGuest';
 import VerifyAccount from '@/pages/verifyAccount/verifyAccount';
-import Home from '@/pages/home/home';
+import Dashboard from '@/pages/dashbaord/dashboard';
+import QuoteForm from '@/pages/quoteForm/quoteForm';
 
 const authRoutes = [
   {path: '/login', element: <Login />},
@@ -12,6 +13,8 @@ const authRoutes = [
   {path: '/verify-account', element: <VerifyAccount />},
 ];
 
-const inAppRoutes = [{path: '/', element: <Home />}];
-
+const inAppRoutes = [
+  {path: '/', element: <Dashboard />},
+  {path: '/quote', element: <QuoteForm />},
+];
 export {authRoutes, inAppRoutes};
