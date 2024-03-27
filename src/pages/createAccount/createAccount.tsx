@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button} from '@/components/ui/button';
 import {Input} from '@/components/ui/input';
 import {Checkbox} from '@/components/ui/checkbox';
@@ -6,13 +6,17 @@ import {Checkbox} from '@/components/ui/checkbox';
 import {useForm, SubmitHandler, Controller} from 'react-hook-form';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {z} from 'zod';
+import {useMutation} from '@tanstack/react-query';
+import {registerEP} from '@/services/auth';
+import {toast} from 'sonner';
+import {useNavigate} from 'react-router-dom';
 
 const schema = z
   .object({
     firstName: z.string().min(1, 'First name is required'),
     lastName: z.string().min(1, 'Last name is required'),
     email: z.string().email(),
-    phoneNumber: z.string().max(10).min(10),
+    phone: z.string().max(10).min(10),
     pin: z.string().max(6).min(6),
     confirmPin: z.string().max(6).min(6),
   })
@@ -25,7 +29,7 @@ const defaultValues = {
   firstName: '',
   lastName: '',
   email: '',
-  phoneNumber: '',
+  phone: '',
   pin: '',
   confirmPin: '',
   checked: false,
@@ -34,6 +38,7 @@ const defaultValues = {
 type FormFields = z.infer<typeof schema>;
 
 const CreateAccount = () => {
+  const navigate = useNavigate();
   const [termsChecked, setTermsChecked] = useState<boolean>(false);
   const {
     control,
@@ -49,7 +54,33 @@ const CreateAccount = () => {
     setTermsChecked(checked);
   };
 
-  const onSubmit: SubmitHandler<FormFields> = data => {};
+  const {mutateAsync, isPending} = useMutation({
+    mutationFn: registerEP,
+    onSuccess: () => {
+      toast.success('Account creation sucessful');
+      navigate('/');
+    },
+    onError: error => {
+      console.log(error);
+      toast.error('Something went wrong. Try again');
+    },
+  });
+
+  const onSubmit: SubmitHandler<FormFields> = async data => {
+    const {firstName, lastName, email, phone, pin, confirmPin} = data;
+    try {
+      await mutateAsync({
+        firstName: firstName.trim(),
+        lastName: lastName.trim(),
+        email,
+        phone,
+        pin,
+        confirmPin,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <React.Fragment>
@@ -103,13 +134,13 @@ const CreateAccount = () => {
             )}
           />
           <Controller
-            name="phoneNumber"
+            name="phone"
             control={control}
             render={({field}) => (
               <Input
                 {...field}
-                errorMessage={errors.phoneNumber?.message}
-                placeholder="Phone number"
+                errorMessage={errors.phone?.message}
+                placeholder="Phone number (e.g 8046464646)"
               />
             )}
           />
@@ -159,7 +190,12 @@ const CreateAccount = () => {
             </div>
           </div>
           <div className="flex flex-col text-center gap-space100">
-            <Button className="w-full" disabled={!termsChecked || !isValid}>
+            <Button
+              className="w-full"
+              disabled={!termsChecked || !isValid}
+              type="submit"
+              loading={isPending}
+            >
               Submit
             </Button>
             <span className="text-[0.8rem]">

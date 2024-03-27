@@ -1,6 +1,7 @@
 import {Navbar} from '@/components/molecules/navbar';
 import PageWrapper from '@/components/molecules/pagewrapper';
 import {Outlet} from 'react-router-dom';
+import {Toaster} from 'sonner';
 import Box from 'ui-box';
 
 const AuthLayout = () => {
@@ -14,6 +15,7 @@ const AuthLayout = () => {
     >
       <PageWrapper>
         <Navbar />
+        <Toaster richColors />
         <Outlet />
       </PageWrapper>
     </Box>
