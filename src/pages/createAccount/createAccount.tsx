@@ -34,7 +34,7 @@ const defaultValues = {
 type FormFields = z.infer<typeof schema>;
 
 const CreateAccount = () => {
-  const [termsChecked, setTermsChecked] = useState(false);
+  const [termsChecked, setTermsChecked] = useState<boolean>(false);
   const {
     control,
     handleSubmit,
