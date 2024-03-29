@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {Button} from '@/components/ui/button';
 import {Input} from '@/components/ui/input';
 import {useForm, SubmitHandler, Controller} from 'react-hook-form';
@@ -102,7 +102,7 @@ const Login = () => {
               />
             )}
           />
-          <a className="text-[0.8rem]">Forgot pin?</a>
+          <a className="text-[0.8rem]" href="/auth/forgot-pin">Forgot pin?</a>
         </div>
         <div className="flex flex-col text-center gap-space100">
           <Button className="w-full" type="submit" loading={isPending}>
