@@ -30,8 +30,8 @@ export const UserProvider = ({children}) => {
   const loading = initialLoad || isFetched;
 
   const handleLogin = useCallback(resp => {
-    localStorage?.setItem('accessToken', resp?.data?.accessToken);
-    localStorage?.setItem('refreshToken', resp?.data?.refreshToken);
+    localStorage?.setItem('accessToken', resp?.data?.data?.accessToken);
+    localStorage?.setItem('refreshToken', resp?.data?.data?.refreshToken);
     setToken(resp);
     setLoggedIn(true);
   }, []);

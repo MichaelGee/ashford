@@ -16,4 +16,8 @@ interface GuestLoginType {
   email: string;
 }
 
-export {RegisterType, LoginType, GuestLoginType};
+interface RefreshTokenType {
+  refreshToken: string;
+}
+
+export {RegisterType, LoginType, GuestLoginType, RefreshTokenType};
