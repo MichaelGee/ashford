@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {Button} from '@/components/ui/button';
 import {Input} from '@/components/ui/input';
 import {useForm, SubmitHandler, Controller} from 'react-hook-form';
@@ -8,6 +8,7 @@ import {useMutation} from '@tanstack/react-query';
 import {loginEP} from '@/services/auth';
 import {toast} from 'sonner';
 import {useNavigate} from 'react-router-dom';
+import {useUser} from '@/hooks/useUser';
 
 const schema = z.object({
   email: z.string().email(),
@@ -23,6 +24,8 @@ type FormFields = z.infer<typeof schema>;
 
 const Login = () => {
   const navigate = useNavigate();
+  const {handleLogin} = useUser();
+
   const {
     control,
     handleSubmit,
@@ -35,8 +38,7 @@ const Login = () => {
 
   const {mutateAsync, isPending} = useMutation({
     mutationFn: loginEP,
-    onSuccess: data => {
-      localStorage.setItem('accessToken', data?.data?.data?.accessToken);
+    onSuccess: () => {
       navigate('/');
     },
     onError: error => {
@@ -55,10 +57,11 @@ const Login = () => {
   const onSubmit: SubmitHandler<FormFields> = async data => {
     const {email, pin} = data;
     try {
-      await mutateAsync({
+      const response = await mutateAsync({
         email,
         pin,
       });
+      handleLogin(response);
     } catch (error) {
       console.log(error);
     }

@@ -61,7 +61,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     return (
       <Comp
-        className={cn(buttonVariants({variant, size}), {
+        className={cn(buttonVariants({variant, size, className}), {
           'opacity-75': loading,
           'cursor-not-allowed': isDisabled,
         })}

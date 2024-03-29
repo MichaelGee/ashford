@@ -7,8 +7,12 @@ import {
   InputOTPSeparator,
   InputOTPSlot,
 } from '@/components/ui/input-otp';
+import queryString from 'query-string';
 
 const VerifyAccount = () => {
+  const queryParams = queryString.parse(location.search);
+  const email = queryParams.email;
+
   return (
     <React.Fragment>
       <div className="mb-space600">
