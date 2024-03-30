@@ -1,51 +1,60 @@
+import React from 'react';
 import {Button} from '@/components/ui/button';
 import {Input} from '@/components/ui/input';
-import { forgotPinEP } from '@/services/auth';
+import {useForm, SubmitHandler, Controller} from 'react-hook-form';
 import {zodResolver} from '@hookform/resolvers/zod';
-import {useMutation} from '@tanstack/react-query';
-import React from 'react';
-import {Controller, SubmitHandler, useForm} from 'react-hook-form';
-import {useNavigate} from 'react-router-dom';
-import {toast} from 'sonner';
 import {z} from 'zod';
+import {useMutation} from '@tanstack/react-query';
+import { resetPinEP} from '@/services/auth';
+import {toast} from 'sonner';
+import {useNavigate} from 'react-router-dom';
+import {useUser} from '@/hooks/useUser';
+import queryString from 'query-string';
 
-const schema = z.object({
-  email: z.string().email(),
-});
+const schema = z
+  .object({
+    pin: z.string().max(6).min(6),
+    confirmPin: z.string().max(6).min(6),
+  })
+  .refine(data => data.pin === data.confirmPin, {
+    message: "Pins don't match",
+    path: ['confirmPin'],
+  });
 
 const defaultValues = {
-  email: '',
+    pin: '',
+    confirmPin: '',
 };
 
 type FormFields = z.infer<typeof schema>;
 
-function ForgotPin() {
+const ResetPin = () => {
+     const queryParams = queryString.parse(location.search);
+     const email = queryParams.email;
   const navigate = useNavigate();
+  const {handleLogin} = useUser();
+
   const {
     control,
     handleSubmit,
     formState: {errors},
-    watch,
   } = useForm<FormFields>({
     mode: 'onChange',
     defaultValues,
     resolver: zodResolver(schema),
   });
 
-  let email = watch('email');
-
   const {mutateAsync, isPending} = useMutation({
-    mutationFn: forgotPinEP,
+    mutationFn: resetPinEP,
     onSuccess: () => {
-      navigate(`/auth/verify-details?email=${encodeURIComponent(email)}`);
+      navigate('/');
     },
     onError: error => {
       console.log(error);
 
       toast.error(
         // @ts-ignore
-        error?.response?.data?.message ||
-          'The details you entered doesn’t match with any of our records.',
+        error?.response?.data?.message || 'Couldnt reset. Try again',
         {
           position: 'top-center',
         }
@@ -54,11 +63,13 @@ function ForgotPin() {
   });
 
   const onSubmit: SubmitHandler<FormFields> = async data => {
-    const {email} = data;
+    const {pin, confirmPin} = data;
     try {
-      await mutateAsync({
-        email,
+      const response = await mutateAsync({
+        pin,
+        confirmPin
       });
+      handleLogin(response);
     } catch (error) {
       console.log(error);
     }
@@ -67,30 +78,38 @@ function ForgotPin() {
   return (
     <React.Fragment>
       <div className="mb-space600">
-        <h1 className="text-[1.5rem] text-primary font-bold">Forgot Pin?</h1>
+        <h1 className="text-[1.5rem] text-primary font-bold">Reset Pin?</h1>
         <p className="text-[0.8rem] text-gray002">
-          Don’t worry, it happens. Please enter the email or phone number
-          associated with your account.
+          Please enter your new pin twice to ensure that they match.
         </p>
       </div>
-
       <form
         className="flex flex-col justify-between h-[65vh]"
         onSubmit={handleSubmit(onSubmit)}
       >
         <div className="flex flex-col gap-space200">
           <Controller
-            name="email"
+            name="pin"
             control={control}
             render={({field}) => (
               <Input
                 {...field}
-                errorMessage={errors.email?.message}
-                placeholder="Email or Phone number"
+                errorMessage={errors.pin?.message}
+                placeholder="Enter your new pin"
               />
             )}
           />
-          <a className="text-[0.8rem] underline">Try another way</a>
+          <Controller
+            name="confirmPin"
+            control={control}
+            render={({field}) => (
+              <Input
+                {...field}
+                errorMessage={errors.confirmPin?.message}
+                placeholder="Re-enter your new pin"
+              />
+            )}
+          />
         </div>
         <div className="flex flex-col text-center gap-space100">
           <Button className="w-full" type="submit" loading={isPending}>
@@ -100,6 +119,6 @@ function ForgotPin() {
       </form>
     </React.Fragment>
   );
-}
+};
 
-export default ForgotPin;
+export default ResetPin;

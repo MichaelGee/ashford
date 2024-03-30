@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button} from '@/components/ui/button';
 import Google from '@/assets/images/google.svg';
 import {
@@ -10,8 +10,27 @@ import {
 import queryString from 'query-string';
 
 const VerifyAccount = () => {
+  const [seconds, setSeconds] = useState(4 * 60); // Adjust for 4 minutes (4 minutes * 60 seconds/minute)
   const queryParams = queryString.parse(location.search);
   const email = queryParams.email;
+
+  useEffect(() => {
+    let intervalId = null;
+
+    if (seconds > 0) {
+      intervalId = setInterval(() => {
+        setSeconds(seconds - 1);
+      }, 1000);
+    }
+
+    // Cleanup function to clear the interval when the component unmounts
+    return () => clearInterval(intervalId);
+  }, [seconds]);
+
+  const minutes = Math.floor(seconds / 60); // Calculate minutes from remaining seconds
+  const remainingSeconds = seconds % 60; // Calculate remaining seconds within the current minute
+  // Function to format time with leading zeros
+  const formatTime = time => String(time).padStart(2, '0');
 
   return (
     <React.Fragment>
@@ -39,7 +58,9 @@ const VerifyAccount = () => {
           <Button className="w-full">Submit</Button>
           <p className="text-[0.8rem] leading-4 text-gray002">
             Resend code in
-            <span className="text-blue001"> 04:46</span>
+            <span className="text-blue001">
+             {' '} {formatTime(minutes)}:{formatTime(remainingSeconds)}
+            </span>
           </p>
         </div>
         <div className="flex flex-col items-center justify-center text-center gap-space100">

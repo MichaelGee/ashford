@@ -15,9 +15,19 @@ interface LoginType {
 interface GuestLoginType {
   email: string;
 }
+interface forgotPinType {
+  email: string;
+}
+interface forgotPinType {
+  email: string;
+}
+interface resetPinType {
+  pin: string;
+  confirmPin: string;
+}
 
 interface RefreshTokenType {
   refreshToken: string;
 }
 
-export {RegisterType, LoginType, GuestLoginType, RefreshTokenType};
+export { RegisterType, LoginType, GuestLoginType, RefreshTokenType, forgotPinType, resetPinType };

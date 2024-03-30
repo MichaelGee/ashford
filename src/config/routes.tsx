@@ -7,13 +7,17 @@ import Dashboard from '@/pages/dashbaord/dashboard';
 import QuoteForm from '@/pages/quoteForm/quoteForm';
 import TransactionHistory from '@/pages/transactionHistory/transactionHistory';
 import ForgotPin from '@/pages/forgotPin/forgotPin';
+import VerifyDetails from '@/pages/verifyDetails/verifyDetails';
+import ResetPin from '@/pages/resetPin/resetPin';
 
 const authRoutes = [
   {path: '/login', element: <Login />},
   {path: '/forgot-pin', element: <ForgotPin />},
+  {path: '/reset-pin', element: <ResetPin />},
   {path: '/create-account', element: <CreateAccount />},
   {path: '/login-as-guest', element: <LoginAsGuest />},
   {path: '/verify-account', element: <VerifyAccount />},
+  {path: '/verify-details', element: <VerifyDetails />},
 ];
 
 const inAppRoutes = [
