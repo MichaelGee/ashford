@@ -9,6 +9,7 @@ import TransactionHistory from '@/pages/transactionHistory/transactionHistory';
 import ForgotPin from '@/pages/forgotPin/forgotPin';
 import VerifyDetails from '@/pages/verifyDetails/verifyDetails';
 import ResetPin from '@/pages/resetPin/resetPin';
+import ViewQuote from '@/pages/veiwQoute/viewQuote';
 
 const authRoutes = [
   {path: '/login', element: <Login />},
@@ -23,6 +24,7 @@ const authRoutes = [
 const inAppRoutes = [
   {path: '/', element: <Dashboard />},
   {path: '/quote', element: <QuoteForm />},
+  {path: '/view-quote', element: <ViewQuote />},
   {path: '/transaction-history', element: <TransactionHistory />},
 ];
 export {authRoutes, inAppRoutes};
