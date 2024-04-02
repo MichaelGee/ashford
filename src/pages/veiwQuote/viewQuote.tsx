@@ -145,7 +145,7 @@ function ViewQuote() {
             <Button
               className="w-full hover:bg-[#1E427D] hover:text-white "
               onClick={() => {
-                if (status === 'quote') navigate('/quote');
+                navigate('/view-quote/accept-quote', { state: dataFromSource });
               }}
             >
               Accept
@@ -154,7 +154,7 @@ function ViewQuote() {
               variant="outline"
               className="w-full hover:bg-[#1E427D] hover:text-white "
               onClick={() => {
-                if (status === 'quote') navigate('/quote');
+                navigate('/view-quote/download');
               }}
             >
               Download PDF
@@ -163,7 +163,7 @@ function ViewQuote() {
               variant="ghost"
               className="w-full text-primary hover:bg-[#1E427D] hover:text-white "
               onClick={() => {
-                if (status === 'quote') navigate('/quote');
+                 navigate('/view-quote/reject');
               }}
             >
               Reject
