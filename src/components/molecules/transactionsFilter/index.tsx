@@ -40,11 +40,11 @@ const TransactionsFilter = () => {
   return (
     <Drawer>
       <DrawerTrigger>
-        <div className="bg-[#E9ECF2] p-[0.65rem] rounded-[5px]">
+        <div className="bg-[#E9ECF2] p-[0.65rem] rounded-[0.3287rem]">
           <Filter />
         </div>
       </DrawerTrigger>
-      <DrawerContent>
+      <DrawerContent className="rounded-t-[1.5rem]">
         <DrawerHeader>
           <DrawerTitle>
             <h1 className="text-start text-primary font-bold mb-5">
@@ -52,7 +52,7 @@ const TransactionsFilter = () => {
             </h1>
           </DrawerTitle>
           <DrawerDescription>
-            <div className="flex items-center justify-between mb-5">
+            <div className="flex items-center justify-between mb-5  ">
               <p className="text-[0.75rem] text-primary">Date</p>
               <DateRange date={dateRange} setDate={handleDateChange} />
             </div>

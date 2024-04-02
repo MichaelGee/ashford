@@ -1,5 +1,6 @@
 import logo from '@/assets/images/logo.svg';
-import {Bell, MenuIcon} from 'lucide-react';
+import {Bell, ChevronLeft, MenuIcon} from 'lucide-react';
+import {useLocation, useNavigate} from 'react-router-dom';
 
 const Navbar = () => {
   return (
@@ -10,10 +11,24 @@ const Navbar = () => {
 };
 
 const InAppNavBar = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
   return (
     <div className="fixed top-0 left-0 w-full flex justify-between items-center p-[1rem] bg-white z-[100]">
-      <MenuIcon />
-      <Bell />
+      {location.pathname === '/view-quote' ? (
+        <ChevronLeft
+          onClick={() => {
+            if (location.pathname === '/view-quote') {
+              navigate(-1);
+            }
+          }}
+        />
+      ) : (
+        <MenuIcon />
+      )}
+      { location.pathname !== '/view-quote' &&
+        <Bell />
+      }
     </div>
   );
 };
