@@ -13,13 +13,14 @@ export const UserProvider = ({children}) => {
   const [initialLoad, setInitialLoad] = useState<boolean>(true);
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
 
-  const {isSuccess, isFetching, refetch, isError, error} = useQuery({
-    queryKey: ['todos'],
+  const {isSuccess, isLoading, refetch, isError, error} = useQuery({
+    queryKey: ['user'],
     queryFn: () => currentUserEP,
     enabled: !!token,
     retry: 1,
     refetchOnWindowFocus: true,
   });
+  const loading = initialLoad || isLoading;
 
   const {mutateAsync} = useMutation({
     mutationFn: refreshTokenEP,
@@ -33,8 +34,6 @@ export const UserProvider = ({children}) => {
       console.log(error);
     },
   });
-
-  const loading = initialLoad || isFetching;
 
   const handleLogin = useCallback(resp => {
     localStorage?.setItem('accessToken', resp?.data?.data?.accessToken);
@@ -89,7 +88,7 @@ export const UserProvider = ({children}) => {
 
   /* Checks if a used is allowed to be logged in by the success of the status endpoint */
   useEffect(() => {
-    if (!isFetching && isSuccess) {
+    if (!isLoading && isSuccess) {
       setUserIsValid(true);
     }
   }, [isSuccess]);
