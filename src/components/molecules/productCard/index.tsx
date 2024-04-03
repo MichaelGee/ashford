@@ -24,7 +24,10 @@ const ProductCard = ({tag, status, image, description}) => {
           top="0"
           left="0"
         />
-        <img src={image} className="rounded-t-[8px] relative h-[5.625rem] w-full object-cover " />
+        <img
+          src={image}
+          className="rounded-t-[8px] relative h-[5.625rem] w-full object-cover "
+        />
         <p className="text-white text-[0.5rem] absolute bottom-[2px] z-[1] ml-[0.6rem]">
           {tag}
         </p>
@@ -37,9 +40,15 @@ const ProductCard = ({tag, status, image, description}) => {
         <Button
           variant="outline"
           size="sm"
-          className="w-full hover:bg-[#1E427D] hover:text-white "
+          className={
+            status === 'requested'
+              ? 'w-full hover:bg-[#E9ECF2] hover:text-primary hover:border-primary '
+              : 'w-full hover:bg-[#1E427D] hover:text-white '
+          }
           onClick={() => {
-            if (status === 'quote') navigate('/quote');
+            if (status === 'quote') navigate('/quote', {state: dataToPass});
+            if (status === 'requested')
+              navigate('/requested-quote', {state: dataToPass});
             if (status === 'success')
               navigate('/view-quote', {state: dataToPass});
           }}
