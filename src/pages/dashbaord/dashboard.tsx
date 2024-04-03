@@ -13,7 +13,7 @@ const Dashboard = () => {
         'Our comprehensive warehousing services offer secure and organized storage facilities for your goods. With our efficient management and state-of-the-art infrastructure, we ensure optimal handling and timely distribution of your inventory. Check our quote in the form below.',
       Image:
         'https://miro.medium.com/v2/resize:fit:768/1*woToSmhUqSfjQAQ4Hl31Cw.jpeg',
-      status: 'quote',
+      status: 'success',
     },
     {
       id: 2,

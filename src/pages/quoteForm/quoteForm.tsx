@@ -1,12 +1,17 @@
 import React from 'react';
 import {Button} from '@/components/ui/button';
 import {Input} from '@/components/ui/input';
+import {useLocation, useNavigate} from 'react-router-dom';
 
 const QuoteForm = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const dataFromSource = location.state;
+
   return (
     <React.Fragment>
       <h1 className="text-[1.25rem] text-primary font-bold text-center">
-        Warehousing
+        {dataFromSource.tag}
       </h1>
       <p className="text-[0.8rem] mt-space200 mb-space600">
         We are glad that you have chosen us. Kindly fill this form and we will
@@ -27,8 +32,21 @@ const QuoteForm = () => {
         </div>
         <div>
           <div className="flex flex-col text-center gap-space100">
-            <Button className="w-full">Submit</Button>
-            <Button className="w-full" variant="outline">
+            <Button
+              className="w-full"
+              onClick={() => {
+                navigate('/quote/quote-submitted', {state: dataFromSource});
+              }}
+            >
+              Submit
+            </Button>
+            <Button
+              className="w-full"
+              variant="outline"
+              onClick={() => {
+                navigate('/');
+              }}
+            >
               Cancel Request
             </Button>
           </div>

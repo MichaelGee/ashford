@@ -163,7 +163,7 @@ function ViewQuote() {
               variant="ghost"
               className="w-full text-primary hover:bg-[#1E427D] hover:text-white "
               onClick={() => {
-                 navigate('/view-quote/reject');
+                 navigate('/view-quote/reject-quote', {state: dataFromSource});
               }}
             >
               Reject
