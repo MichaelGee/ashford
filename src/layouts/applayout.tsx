@@ -1,5 +1,5 @@
 import {InAppNavBar} from '@/components/molecules/navbar';
-import PageWrapper from '@/components/molecules/pagewrapper';
+import { PageWrapper } from '@/components/molecules/pagewrapper';
 import ProtectedRoute from '@/config/protectedRoute';
 import {Outlet} from 'react-router-dom';
 import {Toaster} from 'sonner';

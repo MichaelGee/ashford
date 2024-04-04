@@ -5,9 +5,9 @@ import {useForm, SubmitHandler, Controller} from 'react-hook-form';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {z} from 'zod';
 import {useMutation} from '@tanstack/react-query';
-import { resetPinEP} from '@/services/auth';
+import {resetPinEP} from '@/services/auth';
 import {toast} from 'sonner';
-import {useNavigate} from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 import {useUser} from '@/hooks/useUser';
 import queryString from 'query-string';
 
@@ -22,17 +22,18 @@ const schema = z
   });
 
 const defaultValues = {
-    pin: '',
-    confirmPin: '',
+  pin: '',
+  confirmPin: '',
+  token:""
 };
 
 type FormFields = z.infer<typeof schema>;
 
 const ResetPin = () => {
-     const queryParams = queryString.parse(location.search);
-     const email = queryParams.email;
   const navigate = useNavigate();
-  const {handleLogin} = useUser();
+  const { handleLogin } = useUser();
+    const loc = useLocation();
+  const dataFromSource = loc.state;
 
   const {
     control,
@@ -47,7 +48,7 @@ const ResetPin = () => {
   const {mutateAsync, isPending} = useMutation({
     mutationFn: resetPinEP,
     onSuccess: () => {
-      navigate('/');
+      navigate('/auth/reset-pin-successful');
     },
     onError: error => {
       console.log(error);
@@ -63,11 +64,12 @@ const ResetPin = () => {
   });
 
   const onSubmit: SubmitHandler<FormFields> = async data => {
-    const {pin, confirmPin} = data;
+    const {confirmPin, pin} = data;
     try {
       const response = await mutateAsync({
         pin,
-        confirmPin
+        confirmPin,
+        token: dataFromSource?.token,
       });
       handleLogin(response);
     } catch (error) {

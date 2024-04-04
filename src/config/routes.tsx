@@ -15,6 +15,7 @@ import ConfirmingPayment from '@/pages/confirmingPayment/confirmingPayment';
 import RejectQuote from '@/pages/rejectQuote/rejectQuote';
 import QuoteSuccess from '@/pages/quoteSuccess/quoteSuccess';
 import RequestedPage from '@/pages/requestedPage/requestedPage';
+import ResetPinSuccessful from '@/pages/resetPinSuccessful/resetPinSuccessful';
 
 const authRoutes = [
   {path: '/login', element: <Login />},
@@ -24,6 +25,7 @@ const authRoutes = [
   {path: '/login-as-guest', element: <LoginAsGuest />},
   {path: '/verify-account', element: <VerifyAccount />},
   {path: '/verify-details', element: <VerifyDetails />},
+  {path: '/reset-pin-successful', element: <ResetPinSuccessful />},
 ];
 
 const inAppRoutes = [
