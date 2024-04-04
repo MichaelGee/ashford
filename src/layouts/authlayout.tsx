@@ -1,5 +1,5 @@
 import {Navbar} from '@/components/molecules/navbar';
-import PageWrapper from '@/components/molecules/pagewrapper';
+import { AuthPageWrapper } from '@/components/molecules/pagewrapper';
 import {Outlet} from 'react-router-dom';
 import {Toaster} from 'sonner';
 import Box from 'ui-box';
@@ -13,11 +13,11 @@ const AuthLayout = () => {
       width="100%"
       background="#EFF3FB"
     >
-      <PageWrapper>
+      <AuthPageWrapper>
         <Navbar />
         <Toaster richColors />
         <Outlet />
-      </PageWrapper>
+      </AuthPageWrapper>
     </Box>
   );
 };
