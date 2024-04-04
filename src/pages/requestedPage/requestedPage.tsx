@@ -3,7 +3,6 @@ import {useLocation, useNavigate} from 'react-router-dom';
 import bear from '@/assets/images/Polar Bear.svg';
 import whatsapp from '@/assets/images/whatsapp.svg';
 import {Button} from '@/components/ui/button';
-import {formatTime} from '@/lib/utils';
 import Countdown from '@/components/molecules/countdown';
 
 
@@ -12,7 +11,7 @@ function RequestedPage() {
   const location = useLocation();
   const dataFromSource = location.state;
 
-  const targetDate = new Date('2024-04-06T05:00:00'); // Set your target date and time here
+  const targetDate = new Date('2024-04-06T05:00:00.235Z'); // Set your target date and time here
 
   return (
     <React.Fragment>

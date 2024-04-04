@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { formatTime } from '../../lib/utils';
+import React, {useEffect, useState} from 'react';
+import {formatTime} from '../../lib/utils';
 
 function Countdown({targetDate}) {
   const [remainingTime, setRemainingTime] = useState({
