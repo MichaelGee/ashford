@@ -32,5 +32,15 @@ interface resetPinType {
 interface RefreshTokenType {
   refreshToken: string;
 }
+interface createQuoteType {
+  packageId: string;
+  countryOfDeparture: string;
+  finalDeliveryAddress: string;
+  recipientFullName: string;
+  recipientContactNumber: string;
+  weightOfPackage: string;
+  packageDescription: string;
+  specialInstructions: string;
+}
 
-export { RegisterType, LoginType, GuestLoginType, RefreshTokenType, forgotPinType, forgotPinOTPType, resetPinType };
+export { RegisterType, LoginType, GuestLoginType, RefreshTokenType, forgotPinType, forgotPinOTPType, resetPinType, createQuoteType};

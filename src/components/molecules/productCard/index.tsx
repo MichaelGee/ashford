@@ -4,8 +4,9 @@ import {ArrowRight, Clock4, EyeIcon} from 'lucide-react';
 import Box from 'ui-box';
 import {useNavigate} from 'react-router-dom';
 
-const ProductCard = ({tag, status, image, description}) => {
+const ProductCard = ({packageId, tag, status, image, description}) => {
   const dataToPass = {
+    packageId:packageId,
     tag,
     status,
     image,

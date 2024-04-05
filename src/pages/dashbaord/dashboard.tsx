@@ -1,66 +1,26 @@
 import ProductCard from '@/components/molecules/productCard';
 import Status from '@/components/ui/status';
-import {ChevronRight} from 'lucide-react';
+import {fetchPackagesEP} from '@/services/auth';
+import {useQuery} from '@tanstack/react-query';
+import {ChevronRight, Loader2} from 'lucide-react';
 import React from 'react';
 import {useNavigate} from 'react-router-dom';
 
 const Dashboard = () => {
-  const products = [
-    {
-      id: 1,
-      tag: 'AIR FREIGHT',
-      description:
-        'Our comprehensive warehousing services offer secure and organized storage facilities for your goods. With our efficient management and state-of-the-art infrastructure, we ensure optimal handling and timely distribution of your inventory. Check our quote in the form below.',
-      Image:
-        'https://miro.medium.com/v2/resize:fit:768/1*woToSmhUqSfjQAQ4Hl31Cw.jpeg',
-      status: 'success',
-    },
-    {
-      id: 2,
-      tag: 'SEA FREIGHT',
-      description:
-        'Our comprehensive warehousing services offer secure and organized storage facilities for your goods. With our efficient management and state-of-the-art infrastructure, we ensure optimal handling and timely distribution of your inventory. Check our quote in the form below.',
-      Image:
-        'https://www.savinodelbene.com/wp-content/uploads/2023/10/ocean-freight-shipping.png',
-      status: 'requested',
-    },
-    {
-      id: 3,
-      tag: 'CARGO',
-      description:
-        'Our comprehensive warehousing services offer secure and organized storage facilities for your goods. With our efficient management and state-of-the-art infrastructure, we ensure optimal handling and timely distribution of your inventory. Check our quote in the form below.',
-      Image: 'https://rb.gy/8ywh5w',
-      status: 'success',
-    },
-    {
-      id: 4,
-      tag: 'LAND FREIGHT',
-      description:
-        'Our comprehensive warehousing services offer secure and organized storage facilities for your goods. With our efficient management and state-of-the-art infrastructure, we ensure optimal handling and timely distribution of your inventory. Check our quote in the form below.',
-      Image:
-        'https://pics.craiyon.com/2023-10-18/bead3bc68bae4511b66c85b9689a2348.webp',
-      status: 'requested',
-    },
-    {
-      id: 5,
-      tag: 'WAREHOUSING',
-      description:
-        'Our comprehensive warehousing services offer secure and organized storage facilities for your goods. With our efficient management and state-of-the-art infrastructure, we ensure optimal handling and timely distribution of your inventory. Check our quote in the form below.',
-      Image:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-UPxSCrKqTzqzd6Z8Uy-UAfsbB6bnPiejFBPsqkiaIQ&s',
-      status: 'success',
-    },
-    {
-      id: 6,
-      tag: 'PACKAGING',
-      description:
-        'Our comprehensive warehousing services offer secure and organized storage facilities for your goods. With our efficient management and state-of-the-art infrastructure, we ensure optimal handling and timely distribution of your inventory. Check our quote in the form below.',
-      Image:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4q83pDSNBlflEInHYq--P3NhovDZsmE5uZTlad4rFEw&s',
-      status: 'quote',
-    },
-  ];
   const navigate = useNavigate();
+
+  const {
+    data: products,
+    isSuccess,
+    isLoading,
+    refetch,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ['product'],
+    queryFn: fetchPackagesEP,
+  });
+
   return (
     <React.Fragment>
       <div className="text-center">
@@ -78,15 +38,29 @@ const Dashboard = () => {
       <div className="mt-space400">
         <h1 className="text-primary font-bold mb-space200">Our Products</h1>
         <div className="flex flex-wrap gap-y-2 justify-between">
-          {products.map(product => (
-            <ProductCard
-              key={product.id}
-              tag={product.tag}
-              status={product.status}
-              description={product.description}
-              image={product.Image}
-            />
-          ))}
+          {isLoading ? (
+            <div className="flex justify-center w-full h-16 items-center">
+              <Loader2 className="animate-spin" />
+            </div>
+          ) : (
+            products?.data?.docs?.map(product => (
+              <ProductCard
+                key={product._id}
+                packageId={product._id}
+                tag={product.name}
+                status="quote"
+                description={product?.description}
+                image={product?.image}
+              />
+            ))
+          )}
+          {isError ? (
+            <div className="flex justify-center w-full h-16 items-center">
+              <p className="text-red-500 text-xs">
+                Error fetching Products: {error?.message}
+              </p>
+            </div>
+          ) : null}
         </div>
       </div>
 
