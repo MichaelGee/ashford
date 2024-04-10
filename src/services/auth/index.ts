@@ -4,7 +4,6 @@ import {
   LoginType,
   RefreshTokenType,
   RegisterType,
-  createQuoteType,
   forgotPinOTPType,
   forgotPinType,
   resetPinType,
@@ -31,8 +30,5 @@ export const resetPinEP = (data: resetPinType) =>
 
 export const refreshTokenEP = (data: RefreshTokenType) =>
   api.post('/auth/refresh-token', data);
-
-export const createQuoteEP = (data: createQuoteType) =>
-  api.post('/order/quote', data);
-
-export const fetchPackagesEP = () => axios.get(`${import.meta.env.VITE_BASEURL}/packages`).then(res => res.data);
+  
+ 

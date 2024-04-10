@@ -2,13 +2,12 @@ import React from 'react';
 import {Button} from '@/components/ui/button';
 import {Input} from '@/components/ui/input';
 import {useLocation, useNavigate} from 'react-router-dom';
-import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation } from '@tanstack/react-query';
-import { createQuoteEP } from '@/services/auth';
-import { toast } from 'sonner';
-
+import {Controller, SubmitHandler, useForm} from 'react-hook-form';
+import {z} from 'zod';
+import {zodResolver} from '@hookform/resolvers/zod';
+import {useMutation} from '@tanstack/react-query';
+import {createQuoteEP} from '@/services/user';
+import {toast} from 'sonner';
 
 const schema = z.object({
   packageId: z.string(),
@@ -20,7 +19,7 @@ const schema = z.object({
   packageDescription: z.string(),
   specialInstructions: z.string(),
 });
- 
+
 const defaultValues = {
   packageId: '',
   countryOfDeparture: '',
@@ -39,47 +38,53 @@ const QuoteForm = () => {
   const location = useLocation();
   const dataFromSource = location.state;
 
+  const {
+    control,
+    handleSubmit,
+    formState: {isValid, errors},
+  } = useForm<FormFields>({
+    mode: 'onChange',
+    defaultValues,
+    resolver: zodResolver(schema),
+  });
+
+  const {mutateAsync, isPending} = useMutation({
+    mutationFn: createQuoteEP,
+    onSuccess: () => {
+      toast.success('Order quote created successfully');
+      navigate('/quote/quote-submitted', {state: dataFromSource});
+    },
+    onError: error => {
+      console.log(error);
+      toast.error('Something went wrong. Try again');
+    },
+  });
+
+  const onSubmit: SubmitHandler<FormFields> = async data => {
     const {
-      control,
-      handleSubmit,
-      formState: {isValid, errors},
-    } = useForm<FormFields>({
-      mode: 'onChange',
-      defaultValues,
-      resolver: zodResolver(schema),
-    });
-
- 
-    const {mutateAsync, isPending} = useMutation({
-      mutationFn: createQuoteEP,
-      onSuccess: () => {
-        toast.success('Quote creation sucessful');
-        navigate('/quote/quote-submitted', {state: dataFromSource});
-      },
-      onError: error => {
-        console.log(error);
-        toast.error('Something went wrong. Try again');
-      },
-    });
-
-    const onSubmit: SubmitHandler<FormFields> = async data => {
-      const {countryOfDeparture, finalDeliveryAddress, recipientFullName, recipientContactNumber, weightOfPackage, packageDescription, specialInstructions} = data;
-      try {
-        await mutateAsync({
-          packageId: dataFromSource?.packageId,
-          countryOfDeparture,
-          finalDeliveryAddress,
-          recipientFullName,
-          recipientContactNumber,
-          weightOfPackage,
-          packageDescription,
-          specialInstructions,
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
+      countryOfDeparture,
+      finalDeliveryAddress,
+      recipientFullName,
+      recipientContactNumber,
+      weightOfPackage,
+      packageDescription,
+      specialInstructions,
+    } = data;
+    try {
+      await mutateAsync({
+        packageId: dataFromSource?.packageId,
+        countryOfDeparture,
+        finalDeliveryAddress,
+        recipientFullName,
+        recipientContactNumber,
+        weightOfPackage,
+        packageDescription,
+        specialInstructions,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <React.Fragment>
@@ -105,7 +110,7 @@ const QuoteForm = () => {
                 placeholder="Country of departure"
                 errorMessage={errors.countryOfDeparture?.message}
               />
-            ) }
+            )}
           />
           <Controller
             name="finalDeliveryAddress"
@@ -116,7 +121,7 @@ const QuoteForm = () => {
                 placeholder="Final delivery address"
                 errorMessage={errors.finalDeliveryAddress?.message}
               />
-            ) }
+            )}
           />
           <div className="flex gap-space200">
             <Controller
@@ -128,7 +133,7 @@ const QuoteForm = () => {
                   placeholder="Recipient’s full name"
                   errorMessage={errors.recipientFullName?.message}
                 />
-              ) }
+              )}
             />
             <Controller
               name="recipientContactNumber"
@@ -139,7 +144,7 @@ const QuoteForm = () => {
                   placeholder="Recipient’s contact number"
                   errorMessage={errors.recipientContactNumber?.message}
                 />
-              ) }
+              )}
             />
           </div>
           <Controller
@@ -151,7 +156,7 @@ const QuoteForm = () => {
                 placeholder="Weight of package"
                 errorMessage={errors.weightOfPackage?.message}
               />
-            ) }
+            )}
           />
           <Controller
             name="packageDescription"
@@ -162,7 +167,7 @@ const QuoteForm = () => {
                 placeholder="Package Description (Fragile, Perishable, etc.)"
                 errorMessage={errors.packageDescription?.message}
               />
-            ) }
+            )}
           />
           <Controller
             name="specialInstructions"
@@ -173,10 +178,10 @@ const QuoteForm = () => {
                 placeholder="Special Instructions (Optional)"
                 errorMessage={errors.specialInstructions?.message}
               />
-            ) }
+            )}
           />
         </div>
-       
+
         <div>
           <div className="flex flex-col text-center gap-space100">
             <Button

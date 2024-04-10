@@ -32,6 +32,7 @@ interface resetPinType {
 interface RefreshTokenType {
   refreshToken: string;
 }
+
 interface createQuoteType {
   packageId: string;
   countryOfDeparture: string;
