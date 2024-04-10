@@ -30,3 +30,5 @@ export const resetPinEP = (data: resetPinType) =>
 
 export const refreshTokenEP = (data: RefreshTokenType) =>
   api.post('/auth/refresh-token', data);
+  
+ 
