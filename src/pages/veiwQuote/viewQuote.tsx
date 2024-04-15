@@ -12,42 +12,45 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import {CircleAlert, Copy} from 'lucide-react';
+import {formatter} from '@/lib/currency';
+import {acceptQouteEP} from '@/services/user';
+import {formatQuoteDate} from '@/lib/utils';
 
 function ViewQuote() {
+  const [isLoading, setIsLoading] = React.useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const dataFromSource = location.state;
+  const dataFromSource = location.state.quote;
+  console.log(dataFromSource);
 
-  const invoices = [
-    {
-      product: 'Solar panel',
-      price: '443',
-      quantity: '2',
-      amount: '886',
-    },
-    {
-      product: 'MacBook Air',
-      price: '999',
-      quantity: '1',
-      amount: '999',
-    },
-  ];
+  const acceptQuote = () => {
+    setIsLoading(true);
+    acceptQouteEP(dataFromSource._id)
+      .then(() => {
+        setIsLoading(false);
+        navigate('/');
+      })
+      .catch(() => {
+        setIsLoading(false);
+      });
+  };
+
   return (
     <React.Fragment>
       <div className="bg-white  relative">
         <div className="relative">
           <img
-            src={dataFromSource.image}
+            src={dataFromSource?.quote?.packageId?.image}
             className=" relative h-[13.3125rem] w-full object-cover"
           />
           <p className="text-white font-black absolute bottom-[2px] z-[1] ml-[0.6rem]">
-            {dataFromSource.tag}
+            {dataFromSource?.quote?.packageId?.tag}
           </p>
         </div>
 
         <div className="p-[0.5rem]">
           <p className=" text-sm leading-[1.5rem] mb-2 text-primary">
-            {dataFromSource.description}
+            {dataFromSource?.quote?.packageId?.description}
           </p>
 
           <div className="my-2">
@@ -65,10 +68,10 @@ function ViewQuote() {
               <TableBody className="border-b ">
                 <TableRow>
                   <TableCell className="font-medium border-none p-0 ">
-                    #00224
+                    #{dataFromSource._id}
                   </TableCell>
                   <TableCell className="text-right font-medium px-0 py-2">
-                    19th - Jan - 2024
+                    {formatQuoteDate(dataFromSource.quote.responseDate)}
                   </TableCell>
                 </TableRow>
               </TableBody>
@@ -90,20 +93,23 @@ function ViewQuote() {
                   </TableHead>
                 </TableRow>
               </TableHeader>
+
               <TableBody>
-                {invoices.map(invoice => (
-                  <TableRow key={invoice.product} className="border-none  ">
+                {dataFromSource?.products?.map(invoice => (
+                  <TableRow key={invoice._id} className="border-none  ">
                     <TableCell className="font-medium p-0 ">
-                      {invoice.product}
+                      {invoice.name}
                     </TableCell>
                     <TableCell className="text-right font-medium p-3 ">
-                      ${invoice.price}
+                      {formatter.format(invoice.price)}
                     </TableCell>
                     <TableCell className="text-right font-medium py-0 ">
                       {invoice.quantity}
                     </TableCell>
                     <TableCell className="text-right font-medium p-0 ">
-                      ${invoice.amount}
+                      {formatter.format(
+                        invoice.price * parseInt(invoice.quantity)
+                      )}
                     </TableCell>
                   </TableRow>
                 ))}
@@ -115,7 +121,9 @@ function ViewQuote() {
                   <TableCell className="text-primary text-right">
                     Total
                   </TableCell>
-                  <TableCell className="text-right p-0">$1,885</TableCell>
+                  <TableCell className="text-right p-0">
+                    {formatter.format(dataFromSource.totalAmount)}
+                  </TableCell>
                 </TableRow>
               </TableFooter>
             </Table>
@@ -126,9 +134,9 @@ function ViewQuote() {
                 Payment details:
               </h1>
               <div className="text-[0.6rem]  cursor-pointer flex items-center bg-[#0B8DBC] text-white px-2 rounded-lg gap-2 ">
-                <p>0001110001</p>
+                <p>{dataFromSource?.paymentDetails?.account_number}</p>
                 <p>|</p>
-                <p>Paystack- Titan</p>
+                <p>{dataFromSource?.paymentDetails?.bank}</p>
                 <div></div>
                 <Copy className="w-3" />
               </div>
@@ -144,9 +152,8 @@ function ViewQuote() {
           <div className="flex flex-col gap-2 mt-[2.25rem] ">
             <Button
               className="w-full hover:bg-[#1E427D] hover:text-white "
-              onClick={() => {
-                navigate('/view-quote/accept-quote', { state: dataFromSource });
-              }}
+              onClick={acceptQuote}
+              loading={isLoading}
             >
               Accept
             </Button>
@@ -163,7 +170,7 @@ function ViewQuote() {
               variant="ghost"
               className="w-full text-primary hover:bg-[#1E427D] hover:text-white "
               onClick={() => {
-                 navigate('/view-quote/reject-quote', {state: dataFromSource});
+                navigate('/view-quote/reject-quote', {state: dataFromSource});
               }}
             >
               Reject

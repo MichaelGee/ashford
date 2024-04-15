@@ -30,7 +30,6 @@ const Dashboard = () => {
     queryFn: quotesEP,
   });
 
-
   return (
     <React.Fragment>
       {' '}
@@ -98,8 +97,14 @@ const Dashboard = () => {
           fetchedQuotes.data.docs?.map(quote => (
             <div
               onClick={() => {
+                if (quote.status === 'non-ongoing') {
+                  navigate('/quote', {state: {quote}});
+                }
                 if (quote.status === 'requested') {
                   navigate('/requested-quote', {state: {quote}});
+                }
+                if (quote.status === 'pending') {
+                  navigate('/view-quote', {state: {quote}});
                 }
               }}
               className="flex justify-between items-center py-[1rem] border-b-[0.7px] border-[#00000033]"
