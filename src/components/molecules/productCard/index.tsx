@@ -6,15 +6,23 @@ import {useNavigate} from 'react-router-dom';
 
 const ProductCard = ({packageId, tag, status, image, description}) => {
   const dataToPass = {
-    packageId:packageId,
+    packageId: packageId,
     tag,
     status,
     image,
     description,
   };
   const navigate = useNavigate();
+
+  const handleClick = status => {
+    if (status === 'non-ongoing') navigate('/quote', {state: dataToPass});
+    if (status === 'requested')
+      navigate('/requested-quote', {state: dataToPass});
+    if (status === 'pending') navigate('/view-quote', {state: dataToPass});
+  };
+
   return (
-    <div className="bg-white shadow-md rounded-[8px] max-w-[10rem] min-h-[9.8rem] relative">
+    <div className="bg-white shadow-md rounded-[8px] w-[10rem]  relative">
       <div className="relative">
         <Box
           position="absolute"
@@ -46,15 +54,9 @@ const ProductCard = ({packageId, tag, status, image, description}) => {
               ? 'w-full hover:bg-[#E9ECF2] hover:text-primary hover:border-primary '
               : 'w-full hover:bg-[#1E427D] hover:text-white '
           }
-          onClick={() => {
-            if (status === 'quote') navigate('/quote', {state: dataToPass});
-            if (status === 'requested')
-              navigate('/requested-quote', {state: dataToPass});
-            if (status === 'success')
-              navigate('/view-quote', {state: dataToPass});
-          }}
+          onClick={() => handleClick(status)}
         >
-          {status === 'success' && (
+          {status === 'pending' && (
             <>
               Veiw quote
               <div className="ml-1">
@@ -70,7 +72,7 @@ const ProductCard = ({packageId, tag, status, image, description}) => {
               </div>
             </>
           )}
-          {status === 'quote' && (
+          {status === 'non-ongoing' && (
             <>
               Get quote
               <div className="ml-1">

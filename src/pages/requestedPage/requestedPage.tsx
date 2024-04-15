@@ -10,13 +10,11 @@ function RequestedPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const dataFromSource = location.state;
-
-  const targetDate = new Date('2024-04-06T05:00:00.235Z'); // Set your target date and time here
-
+  
   return (
     <React.Fragment>
       <h1 className="font-bold text-center text-primary">
-        {dataFromSource.tag}
+        {dataFromSource?.quote?.quote?.packageId?.name}
       </h1>
       <div className="w-full flex justify-center mt-[2.0625rem]">
         <img src={bear} alt="" />
@@ -36,7 +34,7 @@ function RequestedPage() {
       </div>
       <div className="flex flex-col w-[13.5625rem] mx-auto mt-[5.5rem] justify-center gap-5 ">
         <p className="font-bold text-center">Response time progress</p>
-        <Countdown targetDate={targetDate} />
+        <Countdown targetDate={dataFromSource?.quote?.quote?.responseDate} />
       </div>
       <Button
         variant="outline"

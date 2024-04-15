@@ -1,6 +1,6 @@
 import ProductCard from '@/components/molecules/productCard';
 import Status from '@/components/ui/status';
-import { formatDate } from '@/lib/utils';
+import {formatDate} from '@/lib/utils';
 import {fetchPackagesEP, quotesEP} from '@/services/user';
 import {useQuery} from '@tanstack/react-query';
 import {ChevronRight, Loader2} from 'lucide-react';
@@ -30,12 +30,6 @@ const Dashboard = () => {
     queryFn: quotesEP,
   });
 
- 
-
-  console.log(fetchedQuotes);
-
-
-
   return (
     <React.Fragment>
       {' '}
@@ -58,12 +52,12 @@ const Dashboard = () => {
               <Loader2 className="animate-spin" />
             </div>
           ) : (
-            fetchedPackages?.data?.docs?.map(product => (
+            fetchedPackages?.data?.data?.data.map(product => (
               <ProductCard
                 key={product._id}
                 packageId={product._id}
                 tag={product.name}
-                status="quote"
+                status={product.ongoingOrderStatus}
                 description={product?.description}
                 image={product?.image}
               />
@@ -87,7 +81,9 @@ const Dashboard = () => {
           <p
             className="text-[0.6rem] text-blue003 cursor-pointer"
             onClick={() => {
-              navigate('/transaction-history', {state: fetchedQuotes.data.docs});
+              navigate('/transaction-history', {
+                state: fetchedQuotes.data.docs,
+              });
             }}
           >
             View all
@@ -99,7 +95,20 @@ const Dashboard = () => {
           </div>
         ) : (
           fetchedQuotes.data.docs?.map(quote => (
-            <div className="flex justify-between items-center py-[1rem] border-b-[0.7px] border-[#00000033]">
+            <div
+              onClick={() => {
+                if (quote.status === 'non-ongoing') {
+                  navigate('/quote', {state: {quote}});
+                }
+                if (quote.status === 'requested') {
+                  navigate('/requested-quote', {state: {quote}});
+                }
+                if (quote.status === 'pending') {
+                  navigate('/view-quote', {state: {quote}});
+                }
+              }}
+              className="flex justify-between items-center py-[1rem] border-b-[0.7px] border-[#00000033]"
+            >
               <div className="flex">
                 <img
                   src={quote?.quote?.packageId?.image}

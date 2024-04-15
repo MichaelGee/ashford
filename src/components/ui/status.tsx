@@ -3,7 +3,7 @@ import {cn} from '@/lib/utils';
 import { CircleCheckBigIcon, CircleX, Clock4, Loader } from 'lucide-react';
 
 interface StatusProps {
-  variant: 'requested' | 'pending' | 'success' | 'rejected';
+  variant: 'requested' | 'pending' | 'accepted' | 'rejected';
   className?: string;
 }
 
@@ -14,7 +14,7 @@ const statusVariants = cva(
       variant: {
         requested: 'bg-[#1E427D1A] text-[#1E427D]',
         pending: 'bg-[#FFA5001A] text-[#FFA500]',
-        success: 'bg-[#10B9811A] text-[#10B981]',
+        accepted: 'bg-[#10B9811A] text-[#10B981]',
         rejected: 'bg-[#E74C3C1A] text-[#E74C3C]',
       },
     },
@@ -38,7 +38,7 @@ const Status = ({variant, className}: StatusProps) => {
       <CircleX className="h-4 w-4 " />
       }
       {
-        variant === 'success' && 
+        variant === 'accepted' && 
       <CircleCheckBigIcon className="h-4 w-4 " />
       }
     </div>

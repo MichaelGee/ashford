@@ -28,4 +28,43 @@ export function formatDate(dateStr) {
     console.error("Invalid date format. Please provide a date string in ISO 8601 format (YYYY-MM-DDTHH:MM:SS.fffZ).");
     return null;
   }
+
+}
+
+
+export const formatQuoteDate = (dateStr) =>{
+ 
+  try {
+    // Parse the date string
+    const dateObj = new Date(dateStr);
+
+    // Extract date parts with desired formatting
+    const year = dateObj.getFullYear();
+    const month = dateObj.toLocaleString("en-US", { month: "short" }); // Short month name (Jan - Dec)
+    const day = dateObj.getDate();
+
+    // Add ordinal suffix (st, nd, rd, th) to the day
+    const suffix = getOrdinalSuffix(day);
+
+    // Format the date string
+    return `${day}${suffix} - ${month} - ${year}`;
+  } catch (error) {
+    // Handle invalid date format
+    return "Invalid date format.";
+  }
+}
+
+function getOrdinalSuffix(day) {
+  const suffixes = ["st", "nd", "rd", "th"];
+  const remainder = day % 10;
+
+  if (remainder === 1 && day !== 11) {
+    return suffixes[0];
+  } else if (remainder === 2 && day !== 12) {
+    return suffixes[1];
+  } else if (remainder === 3 && day !== 13) {
+    return suffixes[2];
+  } else {
+    return suffixes[3];
+  }
 }

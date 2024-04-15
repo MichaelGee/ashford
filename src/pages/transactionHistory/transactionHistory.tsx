@@ -1,14 +1,24 @@
 import TransactionsFilter from '@/components/molecules/transactionsFilter';
 import {Input} from '@/components/ui/input';
 import Status from '@/components/ui/status';
-import { formatDate } from '@/lib/utils';
+import {formatDate} from '@/lib/utils';
 import {ChevronRight, Search} from 'lucide-react';
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 
 const TransactionHistory = () => {
   const location = useLocation();
   const dataFromSource = location.state;
+  const navigate = useNavigate();
+
+  const handleClick = quote => {
+    const status = quote?.status;
+    if (status === 'requested') {
+      navigate('/requested-quote', {state: {quote}});
+      if (status === 'non-ongoing') navigate('/quote', {state: quote});
+      if (status === 'pending') navigate('/view-quote', {state: quote});
+    }
+  };
   return (
     <React.Fragment>
       <div className="flex items-center gap-2">
@@ -21,7 +31,10 @@ const TransactionHistory = () => {
       </div>
       <div>
         {dataFromSource?.map(quote => (
-          <div className="flex justify-between items-center py-[1rem] border-b-[0.7px] border-[#00000033]">
+          <div
+            onClick={() => handleClick(quote)}
+            className="flex justify-between items-center py-[1rem] border-b-[0.7px] border-[#00000033]"
+          >
             <div className="flex">
               <img
                 src={quote?.quote?.packageId?.image}
@@ -42,8 +55,6 @@ const TransactionHistory = () => {
             </div>
           </div>
         ))}
-
-      
       </div>
     </React.Fragment>
   );
