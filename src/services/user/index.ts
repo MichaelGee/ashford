@@ -10,4 +10,4 @@ export const createQuoteEP = (data: createQuoteType) =>
 export const quotesEP = () =>
     api.get('/order/quote/').then(res => res.data); 
 
-export const fetchPackagesEP = () => axios.get(`${import.meta.env.VITE_BASEURL}/packages`).then(res => res.data);
+export const fetchPackagesEP = () => api.get(`/packages`).then(res => res?.data);

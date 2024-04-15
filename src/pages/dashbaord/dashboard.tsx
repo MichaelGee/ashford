@@ -30,7 +30,6 @@ const Dashboard = () => {
     queryFn: quotesEP,
   });
 
-  console.log(fetchedQuotes);
 
   return (
     <React.Fragment>
@@ -54,12 +53,12 @@ const Dashboard = () => {
               <Loader2 className="animate-spin" />
             </div>
           ) : (
-            fetchedPackages?.data?.docs?.map(product => (
+            fetchedPackages?.data?.data?.data.map(product => (
               <ProductCard
                 key={product._id}
                 packageId={product._id}
                 tag={product.name}
-                status="quote"
+                status={product.ongoingOrderStatus}
                 description={product?.description}
                 image={product?.image}
               />
