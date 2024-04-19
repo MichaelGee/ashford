@@ -1,9 +1,86 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button} from '@/components/ui/button';
 import {Input} from '@/components/ui/input';
 import {Checkbox} from '@/components/ui/checkbox';
+import {useForm, SubmitHandler, Controller} from 'react-hook-form';
+import {zodResolver} from '@hookform/resolvers/zod';
+import {z} from 'zod';
+import {useMutation} from '@tanstack/react-query';
+import {registerEP} from '@/services/auth';
+import {toast} from 'sonner';
+import {useNavigate} from 'react-router-dom';
+
+const schema = z
+  .object({
+    firstName: z.string().min(1, 'First name is required'),
+    lastName: z.string().min(1, 'Last name is required'),
+    email: z.string().email(),
+    phone: z.string().max(10).min(10),
+    pin: z.string().max(6).min(6),
+    confirmPin: z.string().max(6).min(6),
+  })
+  .refine(data => data.pin === data.confirmPin, {
+    message: "Pins don't match",
+    path: ['confirmPin'],
+  });
+
+const defaultValues = {
+  firstName: '',
+  lastName: '',
+  email: '',
+  phone: '',
+  pin: '',
+  confirmPin: '',
+  checked: false,
+};
+
+type FormFields = z.infer<typeof schema>;
 
 const CreateAccount = () => {
+  const navigate = useNavigate();
+  const [termsChecked, setTermsChecked] = useState<boolean>(false);
+  const {
+    control,
+    handleSubmit,
+    formState: {isValid, errors},
+  } = useForm<FormFields>({
+    mode: 'onChange',
+    defaultValues,
+    resolver: zodResolver(schema),
+  });
+
+  const handleCheckboxChange = (checked: boolean) => {
+    setTermsChecked(checked);
+  };
+
+  const {mutateAsync, isPending} = useMutation({
+    mutationFn: registerEP,
+    onSuccess: () => {
+      toast.success('Account creation sucessful');
+      navigate('/');
+    },
+    onError: error => {
+      console.log(error);
+      toast.error('Something went wrong. Try again');
+    },
+  });
+
+  const onSubmit: SubmitHandler<FormFields> = async data => {
+    const {firstName, lastName, email, phone, pin, confirmPin} = data;
+    try {
+      await mutateAsync({
+        firstName: firstName.trim(),
+        lastName: lastName.trim(),
+        email,
+        phone,
+        pin,
+        confirmPin,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <React.Fragment>
       <div className="mb-space600">
@@ -14,20 +91,90 @@ const CreateAccount = () => {
           Join the league of happy people using Ashford for their deliveries
         </p>
       </div>
-      <form className=" h-[65vh] flex flex-col justify-between ">
+      <form
+        className=" h-[65vh] flex flex-col justify-between"
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <div className="flex flex-col justify-between gap-space200">
           <div className="flex gap-space200">
-            <Input placeholder="First Name" />
-            <Input placeholder="Last Name" />
+            <Controller
+              name="firstName"
+              control={control}
+              render={({field}) => (
+                <Input
+                  {...field}
+                  errorMessage={errors.firstName?.message}
+                  placeholder="First Name"
+                />
+              )}
+            />
+
+            <Controller
+              name="lastName"
+              control={control}
+              render={({field}) => (
+                <Input
+                  {...field}
+                  errorMessage={errors.lastName?.message}
+                  placeholder="Last Name"
+                />
+              )}
+            />
           </div>
-          <Input placeholder="Phone number" />
+          <Controller
+            name="email"
+            control={control}
+            render={({field}) => (
+              <Input
+                {...field}
+                errorMessage={errors.email?.message}
+                placeholder="Email"
+              />
+            )}
+          />
+          <Controller
+            name="phone"
+            control={control}
+            render={({field}) => (
+              <Input
+                {...field}
+                errorMessage={errors.phone?.message}
+                placeholder="Phone number (e.g 8046464646)"
+              />
+            )}
+          />
+
           <Input placeholder="Name of company (Optional)" />
-          <Input placeholder="Create a 6-digit pin" type="password" />
-          <Input placeholder="Confirm pin" type="password" />
+          <Controller
+            name="pin"
+            control={control}
+            render={({field}) => (
+              <Input
+                {...field}
+                errorMessage={errors.pin?.message}
+                placeholder="Create a 6-digit pin"
+              />
+            )}
+          />
+          <Controller
+            name="confirmPin"
+            control={control}
+            render={({field}) => (
+              <Input
+                {...field}
+                errorMessage={errors.confirmPin?.message}
+                placeholder="Confirm pin"
+              />
+            )}
+          />
         </div>
         <div>
           <div className="items-top flex space-x-2 mb-2">
-            <Checkbox id="terms1" />
+            <Checkbox
+              id="terms1"
+              checked={termsChecked}
+              onCheckedChange={handleCheckboxChange}
+            />
             <div className="grid gap-1.5 leading-none">
               <label
                 htmlFor="terms1"
@@ -42,7 +189,14 @@ const CreateAccount = () => {
             </div>
           </div>
           <div className="flex flex-col text-center gap-space100">
-            <Button className="w-full">Submit</Button>
+            <Button
+              className="w-full"
+              disabled={!termsChecked || !isValid}
+              type="submit"
+              loading={isPending}
+            >
+              Submit
+            </Button>
             <span className="text-[0.8rem]">
               Have an account already? <a href="/auth/login">Login</a>
             </span>

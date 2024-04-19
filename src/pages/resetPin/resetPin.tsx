@@ -5,26 +5,35 @@ import {useForm, SubmitHandler, Controller} from 'react-hook-form';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {z} from 'zod';
 import {useMutation} from '@tanstack/react-query';
-import {loginEP} from '@/services/auth';
+import {resetPinEP} from '@/services/auth';
 import {toast} from 'sonner';
-import {useNavigate} from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 import {useUser} from '@/hooks/useUser';
+import queryString from 'query-string';
 
-const schema = z.object({
-  email: z.string().email(),
-  pin: z.string().max(6).min(6),
-});
+const schema = z
+  .object({
+    pin: z.string().max(6).min(6),
+    confirmPin: z.string().max(6).min(6),
+  })
+  .refine(data => data.pin === data.confirmPin, {
+    message: "Pins don't match",
+    path: ['confirmPin'],
+  });
 
 const defaultValues = {
-  email: '',
   pin: '',
+  confirmPin: '',
+  token:""
 };
 
 type FormFields = z.infer<typeof schema>;
 
-const Login = () => {
+const ResetPin = () => {
   const navigate = useNavigate();
-  const {handleLogin} = useUser();
+  const { handleLogin } = useUser();
+    const loc = useLocation();
+  const dataFromSource = loc.state;
 
   const {
     control,
@@ -37,16 +46,16 @@ const Login = () => {
   });
 
   const {mutateAsync, isPending} = useMutation({
-    mutationFn: loginEP,
+    mutationFn: resetPinEP,
     onSuccess: () => {
-      navigate('/');
+      navigate('/auth/reset-pin-successful');
     },
     onError: error => {
       console.log(error);
 
       toast.error(
         // @ts-ignore
-        error?.response?.data?.message || 'Couldnt login. Try again',
+        error?.response?.data?.message || 'Couldnt reset. Try again',
         {
           position: 'top-center',
         }
@@ -55,11 +64,12 @@ const Login = () => {
   });
 
   const onSubmit: SubmitHandler<FormFields> = async data => {
-    const {email, pin} = data;
+    const {confirmPin, pin} = data;
     try {
       const response = await mutateAsync({
-        email,
         pin,
+        confirmPin,
+        token: dataFromSource?.token,
       });
       handleLogin(response);
     } catch (error) {
@@ -70,9 +80,9 @@ const Login = () => {
   return (
     <React.Fragment>
       <div className="mb-space600">
-        <h1 className="text-[1.5rem] text-primary font-bold">Welcome back</h1>
+        <h1 className="text-[1.5rem] text-primary font-bold">Reset Pin?</h1>
         <p className="text-[0.8rem] text-gray002">
-          Login to your account to continue
+          Please enter your new pin twice to ensure that they match.
         </p>
       </div>
       <form
@@ -81,47 +91,36 @@ const Login = () => {
       >
         <div className="flex flex-col gap-space200">
           <Controller
-            name="email"
-            control={control}
-            render={({field}) => (
-              <Input
-                {...field}
-                errorMessage={errors.email?.message}
-                placeholder="Email"
-              />
-            )}
-          />
-          <Controller
             name="pin"
             control={control}
             render={({field}) => (
               <Input
                 {...field}
                 errorMessage={errors.pin?.message}
-                placeholder="6-digit pin"
+                placeholder="Enter your new pin"
               />
             )}
           />
-          <a className="text-[0.8rem]" href="/auth/forgot-pin">Forgot pin?</a>
+          <Controller
+            name="confirmPin"
+            control={control}
+            render={({field}) => (
+              <Input
+                {...field}
+                errorMessage={errors.confirmPin?.message}
+                placeholder="Re-enter your new pin"
+              />
+            )}
+          />
         </div>
         <div className="flex flex-col text-center gap-space100">
           <Button className="w-full" type="submit" loading={isPending}>
-            Login
+            Reset Pin
           </Button>
-          <Button
-            className="w-full"
-            variant="outline"
-            onClick={() => navigate('/auth/login-as-guest')}
-          >
-            Continue as Guest
-          </Button>
-          <span className="text-[0.8rem]">
-            New user? <a href="/auth/create-account">Sign up</a>
-          </span>
         </div>
       </form>
     </React.Fragment>
   );
 };
 
-export default Login;
+export default ResetPin;

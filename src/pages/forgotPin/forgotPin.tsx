@@ -1,14 +1,13 @@
-import React from 'react';
 import {Button} from '@/components/ui/button';
 import {Input} from '@/components/ui/input';
-import Google from '@/assets/images/google.svg';
-import {useForm, SubmitHandler, Controller} from 'react-hook-form';
+import { forgotPinEP } from '@/services/auth';
 import {zodResolver} from '@hookform/resolvers/zod';
-import {z} from 'zod';
 import {useMutation} from '@tanstack/react-query';
-import {loginAsGuest} from '@/services/auth';
+import React from 'react';
+import {Controller, SubmitHandler, useForm} from 'react-hook-form';
 import {useNavigate} from 'react-router-dom';
 import {toast} from 'sonner';
+import {z} from 'zod';
 
 const schema = z.object({
   email: z.string().email(),
@@ -20,7 +19,7 @@ const defaultValues = {
 
 type FormFields = z.infer<typeof schema>;
 
-const LoginAsGuest = () => {
+function ForgotPin() {
   const navigate = useNavigate();
   const {
     control,
@@ -36,16 +35,17 @@ const LoginAsGuest = () => {
   let email = watch('email');
 
   const {mutateAsync, isPending} = useMutation({
-    mutationFn: loginAsGuest,
+    mutationFn: forgotPinEP,
     onSuccess: () => {
-      navigate(`/auth/verify-account?email=${encodeURIComponent(email)}`);
+      navigate(`/auth/verify-details?email=${encodeURIComponent(email)}`);
     },
     onError: error => {
       console.log(error);
 
       toast.error(
         // @ts-ignore
-        error?.response?.data?.message || 'Couldnt login. Try again',
+        error?.response?.data?.message ||
+          'The details you entered doesn’t match with any of our records.',
         {
           position: 'top-center',
         }
@@ -63,14 +63,17 @@ const LoginAsGuest = () => {
       console.log(error);
     }
   };
+
   return (
     <React.Fragment>
       <div className="mb-space600">
-        <h1 className="text-[1.5rem] text-primary font-bold">Sign In</h1>
+        <h1 className="text-[1.5rem] text-primary font-bold">Forgot Pin?</h1>
         <p className="text-[0.8rem] text-gray002">
-          You will receive a 6-digit OTP
+          Don’t worry, it happens. Please enter the email or phone number
+          associated with your account.
         </p>
       </div>
+
       <form
         className="flex flex-col justify-between h-[65vh]"
         onSubmit={handleSubmit(onSubmit)}
@@ -83,25 +86,20 @@ const LoginAsGuest = () => {
               <Input
                 {...field}
                 errorMessage={errors.email?.message}
-                placeholder="Email"
+                placeholder="Email or Phone number"
               />
             )}
           />
-          <Button className="w-full" type="submit" loading={isPending}>
-            Send OTP
-          </Button>
+          <a className="text-[0.8rem] underline">Try another way</a>
         </div>
-        <div className="flex flex-col items-center justify-center text-center gap-space100">
-          <Button className="w-fit bg-transparent" variant="outline">
-            <img src={Google} className="mr-3" /> Sign in with Google
+        <div className="flex flex-col text-center gap-space100">
+          <Button className="w-full" type="submit" loading={isPending}>
+            Reset Pin
           </Button>
-          <span className="text-[0.8rem]">
-            New user? <a>Sign up</a>
-          </span>
         </div>
       </form>
     </React.Fragment>
   );
-};
+}
 
-export default LoginAsGuest;
+export default ForgotPin;
