@@ -27,11 +27,12 @@ const TransactionHistory = () => {
           placeholder="Search History"
           className="bg-[#E9ECF2] border-none"
         />
-        <TransactionsFilter />
+        <TransactionsFilter data={dataFromSource} />
       </div>
       <div>
         {dataFromSource?.map(quote => (
           <div
+            key={quote?._id}
             onClick={() => handleClick(quote)}
             className="flex justify-between items-center py-[1rem] border-b-[0.7px] border-[#00000033]"
           >
