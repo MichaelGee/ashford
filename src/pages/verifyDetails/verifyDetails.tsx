@@ -50,7 +50,6 @@ const VerifyDetails = () => {
       }, 1000);
     }
 
-    // Cleanup function to clear the interval when the component unmounts
     return () => clearInterval(intervalId);
   }, [seconds]);
 
@@ -62,13 +61,12 @@ const VerifyDetails = () => {
     defaultValues,
   });
 
-  
   const {mutateAsync, isPending} = useMutation({
     mutationFn: forgotPinOTPEP,
-    
+
     onSuccess: data => {
       const dataToSend = {
-        token:data?.data?.data?.token
+        token: data?.data?.data?.token,
       };
       toast.success('OTP verified successful');
       navigate(`/auth/reset-pin`, {state: dataToSend});
