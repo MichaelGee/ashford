@@ -4,7 +4,7 @@ import AppLayout from '@/layouts/applayout';
 import Authlayout from '@/layouts/authlayout';
 
 const renderRoutes = (layout, routes) => (
-  <Routes>
+  <Routes  >
     <Route element={layout}>
       {routes.map(({path, element}) => (
         <Route key={path} path={path} element={element} />
