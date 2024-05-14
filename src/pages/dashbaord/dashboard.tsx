@@ -96,6 +96,7 @@ const Dashboard = () => {
         ) : (
           fetchedQuotes.data.docs?.map(quote => (
             <div
+              key={quote?._id}
               onClick={() => {
                 if (quote.status === 'non-ongoing') {
                   navigate('/quote', {state: {quote}});

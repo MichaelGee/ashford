@@ -25,7 +25,7 @@ import DateRange from '@/components/ui/dateRange';
 import {DateRange as ReactDayPickerDateRange} from 'react-day-picker';
 import {useState} from 'react';
 
-const TransactionsFilter = () => {
+const TransactionsFilter = ({data}) => {
   const [dateRange, setDateRange] = useState<
     ReactDayPickerDateRange | undefined
   >({
@@ -37,6 +37,34 @@ const TransactionsFilter = () => {
   const handleDateChange = (range: ReactDayPickerDateRange | undefined) => {
     setDateRange(range);
   };
+
+  //   function filterByStatus(data, status) {
+  //     return data.filter(item => item.status === status);
+  //   }
+
+  //   function filterByResponseDate(data, startDate, endDate) {
+
+  //   return data.filter(item => {
+  //     const responseDate = new Date(item.quote.responseDate);
+  //     return responseDate >= startDate && responseDate <= endDate;
+  //   });
+  // }
+
+  // const startDate = new Date("2024-04-06"); // Replace with your desired start date
+  // const endDate = new Date("2024-04-07"); // Replace with your desired end date
+
+  // const filteredByDate = filterByResponseDate(data, startDate, endDate);
+
+  //   const filteredStatus = filterByStatus(data, 'accepte');
+
+  // const combinedResults = [
+  //   ...filterByStatus(filteredByDate, 'accepted'), // Accepted quotes within date range
+  //   ...filterByStatus(filteredByDate, 'requested'), // Requested quotes within date range
+  //   ...filteredStatus.filter(item => !filteredByDate.includes(item)), // Accepted quotes outside date range (avoids duplicates)
+  //   ...requestedQuotes.filter(item => !filteredByDate.includes(item)), // Requested quotes outside date range (avoids duplicates)
+  // ];
+
+  // console.log(combinedResults); // Array containing
   return (
     <Drawer>
       <DrawerTrigger>
@@ -52,9 +80,13 @@ const TransactionsFilter = () => {
             </h1>
           </DrawerTitle>
           <DrawerDescription>
-            <div className="flex items-center justify-between mb-5  ">
+            <div className="flex items-center  mb-5 gap-1 ">
               <p className="text-[0.75rem] text-primary">Date</p>
-              <DateRange date={dateRange} setDate={handleDateChange} />
+              <DateRange
+                date={dateRange}
+                setDate={handleDateChange}
+                className="w-[6em]"
+              />
             </div>
             <div className="flex items-center justify-between">
               <p className="text-[0.75rem] text-primary">Transaction Status</p>

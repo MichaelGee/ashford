@@ -23,6 +23,10 @@ interface forgotPinOTPType {
   email: string;
   otp: string
 }
+interface verifyGuestOTPType {
+  email: string;
+  pin: string
+}
 interface resetPinType {
   pin: string;
   confirmPin: string;
@@ -44,4 +48,4 @@ interface createQuoteType {
   specialInstructions: string;
 }
 
-export { RegisterType, LoginType, GuestLoginType, RefreshTokenType, forgotPinType, forgotPinOTPType, resetPinType, createQuoteType};
+export { RegisterType, LoginType, GuestLoginType, RefreshTokenType, forgotPinType, forgotPinOTPType, resetPinType, createQuoteType, verifyGuestOTPType };

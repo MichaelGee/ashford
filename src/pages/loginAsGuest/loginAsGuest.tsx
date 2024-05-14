@@ -22,6 +22,9 @@ type FormFields = z.infer<typeof schema>;
 
 const LoginAsGuest = () => {
   const navigate = useNavigate();
+  
+  
+
   const {
     control,
     handleSubmit,

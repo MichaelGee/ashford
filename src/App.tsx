@@ -5,12 +5,12 @@ import RouterComponent from './config/router';
 
 function App() {
   return (
-    <>
+    <div className=" max-w-3xl mx-auto  ">
       <Providers>
         <ReactQueryDevtools initialIsOpen={false} />
         <RouterComponent />
       </Providers>
-    </>
+    </div>
   );
 }
 
