@@ -42,6 +42,13 @@ export const UserProvider = ({children}) => {
     setLoggedIn(true);
   }, []);
 
+  const handleGuestLogin = useCallback(resp => {
+    localStorage?.setItem('accessToken', resp?.data?.data?.token);
+    localStorage?.setItem('refreshToken', resp?.data?.data?.refreshToken);
+    setToken(resp);
+    setLoggedIn(true);
+  }, []);
+
   const handleLogout = useCallback(() => {
     localStorage?.removeItem('accessToken');
     localStorage?.removeItem('refreshToken');
@@ -98,6 +105,7 @@ export const UserProvider = ({children}) => {
       //   user,
       //   setUser,
       handleLogin,
+      handleGuestLogin,
       handleLogout,
       loggedIn,
       userIsValid,
@@ -107,6 +115,7 @@ export const UserProvider = ({children}) => {
       //   user,
       //   setUser,
       handleLogin,
+      handleGuestLogin,
       handleLogout,
       loggedIn,
       userIsValid,
