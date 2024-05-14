@@ -7,6 +7,7 @@ import {
   forgotPinOTPType,
   forgotPinType,
   resetPinType,
+  verifyGuestOTPType,
 } from '@/types/auth/auth.types.ts';
 import { api } from '../api';
 
@@ -21,6 +22,9 @@ export const loginAsGuest = (data: GuestLoginType) =>
 
 export const forgotPinEP = (data: forgotPinType) =>
   axios.post(`${import.meta.env.VITE_BASEURL}/auth/forgot/password`, data);
+
+export const verifyGuestOTPEP = (data: verifyGuestOTPType) =>
+  axios.post(`${import.meta.env.VITE_BASEURL}/auth/guest/login`, data);
 
 export const forgotPinOTPEP = (data: forgotPinOTPType) =>
   axios.post(`${import.meta.env.VITE_BASEURL}/auth/verify/forgot/password/otp`, data);
