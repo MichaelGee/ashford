@@ -9,13 +9,16 @@ import {useMutation} from '@tanstack/react-query';
 import {registerEP} from '@/services/auth';
 import {toast} from 'sonner';
 import {useNavigate} from 'react-router-dom';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
+import {error} from 'console';
 
 const schema = z
   .object({
     firstName: z.string().min(1, 'First name is required'),
     lastName: z.string().min(1, 'Last name is required'),
     email: z.string().email(),
-    phone: z.string().max(10).min(10),
+    phone: z.string().max(13).min(13),
     pin: z.string().max(6).min(6),
     confirmPin: z.string().max(6).min(6),
   })
@@ -132,17 +135,22 @@ const CreateAccount = () => {
               />
             )}
           />
+          
           <Controller
             name="phone"
             control={control}
-            render={({field}) => (
-              <Input
+            render={ ({ field }) => (              
+              <PhoneInput
                 {...field}
-                errorMessage={errors.phone?.message}
+                country={'ng'}
                 placeholder="Phone number (e.g 8046464646)"
+                inputStyle={ { width: '100%', height: '', paddingTop: '1.2rem', paddingBottom: '1.2rem',   }}
               />
             )}
           />
+          {errors.phone ? (
+            <p className="text-xs text-red-500">{errors?.phone?.message}</p>
+          ) : null}
 
           <Input placeholder="Name of company (Optional)" />
           <Controller

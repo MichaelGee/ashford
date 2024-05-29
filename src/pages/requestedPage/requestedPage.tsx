@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useLocation, useNavigate} from 'react-router-dom';
-import bear from '@/assets/images/Polar Bear.svg';
+import bear from '@/assets/images/Polar Bear.gif';
 import whatsapp from '@/assets/images/whatsapp.svg';
 import {Button} from '@/components/ui/button';
 import Countdown from '@/components/molecules/countdown';
