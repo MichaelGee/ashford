@@ -1,6 +1,7 @@
 import {Button} from '@/components/ui/button';
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import success from '../../assets/images/Successfully Done.gif';
 
 
 function QuoteSuccess() {
@@ -13,6 +14,9 @@ function QuoteSuccess() {
         {dataFromSource.tag}
       </h1>
       <div className=" flex flex-col w-full h-[70vh] items-center justify-center ">
+        <div className="mb-6 w-[14.375rem] h-[14.375rem] ">
+          <img src={success} alt="" />
+        </div>
         <div className=" font-bold text-center text-[2rem] ">
           Thank You for Requesting a quote!
         </div>

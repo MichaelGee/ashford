@@ -16,6 +16,10 @@ import RejectQuote from '@/pages/rejectQuote/rejectQuote';
 import QuoteSuccess from '@/pages/quoteSuccess/quoteSuccess';
 import RequestedPage from '@/pages/requestedPage/requestedPage';
 import ResetPinSuccessful from '@/pages/resetPinSuccessful/resetPinSuccessful';
+import LogoutSuccess from '@/pages/logoutSuccess/logoutSuccess';
+import Faq from '@/pages/faq/faq';
+import ContactUs from '@/pages/contacUs/contactUs';
+import AboutUs from '@/pages/aboutUs/aboutUs';
 
 const authRoutes = [
   {path: '/login', element: <Login />},
@@ -26,6 +30,7 @@ const authRoutes = [
   {path: '/verify-account', element: <VerifyAccount />},
   {path: '/verify-details', element: <VerifyDetails />},
   {path: '/reset-pin-successful', element: <ResetPinSuccessful />},
+  {path: '/logout-successful', element: <LogoutSuccess />},
 ];
 
 const inAppRoutes = [
@@ -36,6 +41,9 @@ const inAppRoutes = [
   {path: '/view-quote/reject-quote', element: <RejectQuote />},
   {path: '/requested-quote', element: <RequestedPage />},
   {path: '/quote/quote-submitted', element: <QuoteSuccess />},
+  {path: '/faq', element: <Faq />},
+  {path: '/contact-us', element: <ContactUs />},
+  {path: '/about-us', element: <AboutUs />},
   {
     path: '/view-quote/accept-quote/confirming-payment',
     element: <ConfirmingPayment />,
