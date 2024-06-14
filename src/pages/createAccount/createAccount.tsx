@@ -17,10 +17,10 @@ const schema = z
   .object({
     firstName: z.string().min(1, 'First name is required'),
     lastName: z.string().min(1, 'Last name is required'),
-    email: z.string().email(),
-    phone: z.string().max(13).min(13),
-    pin: z.string().max(6).min(6),
-    confirmPin: z.string().max(6).min(6),
+    email: z.string().email('Invalid email address'),
+    phone: z.string().max(13, 'Phone number must be 13 digits').min(13, 'Phone number must be 13 digits'),
+    pin: z.string().min(3, 'Pin must be more than 3 digits'),
+    confirmPin: z.string().min(6, 'Pin must be more than 3 digits'),
   })
   .refine(data => data.pin === data.confirmPin, {
     message: "Pins don't match",
