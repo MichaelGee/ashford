@@ -98,7 +98,7 @@ const Dashboard = () => {
           </div>
         ) : (
           <div className="h-fit">
-            {fetchedQuotes === 0 ? (
+            {fetchedQuotes.data.docs.length !== 0 ? (
               fetchedQuotes.data.docs?.map(quote => (
                 <div
                   key={quote?._id}

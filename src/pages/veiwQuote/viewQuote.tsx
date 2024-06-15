@@ -20,8 +20,7 @@ function ViewQuote() {
   const [isLoading, setIsLoading] = React.useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const dataFromSource = location.state.quote;
-  console.log(dataFromSource);
+  const dataFromSource = location?.state?.quote;
 
   const acceptQuote = () => {
     setIsLoading(true);
@@ -68,10 +67,11 @@ function ViewQuote() {
               <TableBody className="border-b ">
                 <TableRow>
                   <TableCell className="font-medium border-none p-0 ">
-                    #{dataFromSource._id}
+                    #{dataFromSource?._id}
                   </TableCell>
                   <TableCell className="text-right font-medium px-0 py-2">
-                    {formatQuoteDate(dataFromSource.quote.responseDate)}
+                    {dataFromSource?.quote?.responseDate &&
+                      formatQuoteDate(dataFromSource?.quote?.responseDate)}
                   </TableCell>
                 </TableRow>
               </TableBody>
@@ -96,20 +96,21 @@ function ViewQuote() {
 
               <TableBody>
                 {dataFromSource?.products?.map(invoice => (
-                  <TableRow key={invoice._id} className="border-none  ">
+                  <TableRow key={invoice?._id} className="border-none  ">
                     <TableCell className="font-medium p-0 ">
                       {invoice.name}
                     </TableCell>
                     <TableCell className="text-right font-medium p-3 ">
-                      {formatter.format(invoice.price)}
+                      {invoice?.price && formatter.format(invoice?.price)}
                     </TableCell>
                     <TableCell className="text-right font-medium py-0 ">
-                      {invoice.quantity}
+                      {invoice?.quantity}
                     </TableCell>
                     <TableCell className="text-right font-medium p-0 ">
-                      {formatter.format(
-                        invoice.price * parseInt(invoice.quantity)
-                      )}
+                      {invoice?.quantity &&
+                        formatter.format(
+                          invoice?.price * parseInt(invoice.quantity)
+                        )}
                     </TableCell>
                   </TableRow>
                 ))}
@@ -122,7 +123,9 @@ function ViewQuote() {
                     Total
                   </TableCell>
                   <TableCell className="text-right p-0">
-                    {formatter.format(dataFromSource.totalAmount)}
+                    {dataFromSource?.totalAmount && formatter.format(
+                      dataFromSource?.totalAmount
+                    )}
                   </TableCell>
                 </TableRow>
               </TableFooter>
