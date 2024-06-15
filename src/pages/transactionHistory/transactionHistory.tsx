@@ -7,9 +7,9 @@ import React from 'react';
 import {useLocation, useNavigate} from 'react-router-dom';
 import emptyDash from '../../assets/images/emptyDash.svg';
 
-const TransactionHistory = () => {
+const   TransactionHistory = () => {
   const location = useLocation();
-  const dataFromSource = location.state;
+  const dataFromSource = location?.state;
   const navigate = useNavigate();
 
   const handleClick = quote => {
